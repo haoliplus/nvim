@@ -89,17 +89,19 @@ return {
     --   }
     -- end
   },
-  {
-    "IndianBoy42/tree-sitter-just",
-    opts = {},
-  },
+  -- {
+  --   "IndianBoy42/tree-sitter-just",
+  --   opts = {},
+  -- },
   { ------ Better syntax highlightingG
     "nvim-treesitter/nvim-treesitter",
     enabled = true,
-    dependencies = { "IndianBoy42/tree-sitter-just" },
+    -- dependencies = { "IndianBoy42/tree-sitter-just" },
     build = ":TSUpdate",
+    lazy = false,
     config = function()
-      require("nvim-treesitter.configs").setup({
+      -- require("nvim-treesitter.configs").setup({
+      require("nvim-treesitter").setup({
         modules = {},
         -- A list of parser names, or "all" (the five listed parsers should always be installed)
         ensure_installed = {
