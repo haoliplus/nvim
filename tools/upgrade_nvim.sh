@@ -37,6 +37,7 @@ LIB_DIR="${LOCAL_DIR}/lib"
 mkdir -p ${LIB_DIR}
 mkdir -p ${BIN_DIR}
 mkdir -p ${SHARE_DIR}
+mkdir -p ${SHARE_DIR}/nvim
 
 # curl -L ${NVIM_DOWNLOAD_URL} | tar -xz -C ${TMP_DIR}
 wget -O - -c ${NVIM_DOWNLOAD_URL} | tar -xz -C ${TMP_DIR}
