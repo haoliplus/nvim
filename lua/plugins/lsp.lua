@@ -166,15 +166,20 @@ return {
           end)
         end,
       }
-      if vim.fn.hostname() == "in_dev_docker" then
+      -- NVIM_LSP_CLANGD_CMD="docker exec -i container_name /usr/bin/clangd --background-index --clang-tidy --offset-encoding=utf-16"
+      -- NVIM_LSP_CLANGD_CMD="ssh dev@host 'clangd --background-index --clang-tidy --offset-encoding=utf-16'"
+      local clangd_env_cmd = vim.env.NVIM_LSP_CLANGD_CMD
+      if clangd_env_cmd and clangd_env_cmd ~= ""  then
         -- do thing
         lsp_opts["clangd"] = {
-          cmd = {
-            "/usr/bin/clangd",
-            "--background-index",
-            "--clang-tidy",
-            "--offset-encoding=utf-16",
-          },
+          -- cmd = {
+          --   "docker", "exec", "-i", "example",
+          --   "/usr/bin/clangd",
+          --   "--background-index",
+          --   "--clang-tidy",
+          --   "--offset-encoding=utf-16",
+          -- },
+          cmd = vim.split(clangd_env_cmd, " ", { trimempty = true }),
           -- single_file_support = true,
           filetypes = { "c", "cpp", "cc", "h" },
           -- root_dir = root_dir_func,
