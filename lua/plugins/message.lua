@@ -115,6 +115,8 @@ return {
       --   filter = { event = "msg_show" },
       -- },
     }, --- opts
-    keys = { "<Esc>", "<cmd>NoiceDismiss<cr>", mode = "n", noremap = true, silent = true, desc = "exit" },
+    keys = {
+      { "<Esc>", "<cmd>Noice dismiss<cr>", mode = "n", silent = true, desc = "Dismiss messages" },
+    },
   }, --- noice
 }
