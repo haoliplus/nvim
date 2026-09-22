@@ -18,7 +18,9 @@
 - Language formatter presets are stored in `resources/` (e.g., `resources/clang-format`, `resources/yapf/style`, `resources/pycodestyle`) and should guide formatting for templates/snippets.
 
 ## Testing Guidelines
-- There is no automated test suite in this repo; verify changes by launching `nvim` and exercising the affected workflows.
+- Verify changes by launching `nvim` and exercising the affected workflows.
+- JavaScript highlighting regression: `nvim --headless -i NONE "+luafile tests/treesitter_spec.lua" +qa` (uses the normal config; requires `:TSInstall javascript jsdoc regex`).
+- Fresh parser installation regression: `nvim --headless -u NONE -i NONE -l tests/treesitter_bootstrap_spec.lua` (requires the installed nvim-treesitter plugin, network access, tree-sitter CLI, and a C compiler; uses a temporary parser directory).
 - If you add tests in the future, place them under a top-level `tests/` directory and document how to run them here.
 
 ## Commit & Pull Request Guidelines

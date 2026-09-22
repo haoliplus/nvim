@@ -1,8 +1,19 @@
+local installing_parsers = false
+local function start_treesitter(bufnr)
+  local ok, err = pcall(vim.treesitter.start, bufnr)
+  if not ok and not installing_parsers and vim.bo[bufnr].filetype:match("^javascript") then
+    vim.notify_once(
+      "JavaScript Tree-sitter highlighting failed. Run :TSInstall javascript jsdoc regex\n" .. tostring(err),
+      vim.log.levels.WARN
+    )
+  end
+end
+
 local function setup_builtin_treesitter()
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("UserTreesitterStart", { clear = true }),
     callback = function(args)
-      pcall(vim.treesitter.start, args.buf)
+      start_treesitter(args.buf)
     end,
   })
 end
@@ -18,6 +29,31 @@ return {
     branch = "main",
     lazy = false,
     build = ":TSUpdate",
+    config = function()
+      -- The main branch has no ensure_installed option. Install is asynchronous
+      -- and skips existing parsers, including when restoring onto a new machine.
+      installing_parsers = true
+      require("nvim-treesitter").install({ "javascript", "jsdoc", "regex" }):await(function(err, success)
+        vim.schedule(function()
+          installing_parsers = false
+          -- Refresh runtime discovery when the parser directory was just created.
+          vim.o.runtimepath = vim.o.runtimepath
+          if err or success == false then
+            vim.notify(
+              "Tree-sitter installation failed. Check :messages and :checkhealth nvim-treesitter; "
+                .. "then run :TSInstall javascript jsdoc regex.\n" .. tostring(err or "See installer output."),
+              vim.log.levels.WARN
+            )
+          end
+          -- FileType may already have fired while the parsers were downloading.
+          for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].filetype:match("^javascript") then
+              start_treesitter(bufnr)
+            end
+          end
+        end)
+      end)
+    end,
   },
   {
     "phelipetls/jsonpath.nvim",
