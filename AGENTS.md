@@ -20,6 +20,7 @@
 ## Testing Guidelines
 - Verify changes by launching `nvim` and exercising the affected workflows.
 - JavaScript highlighting regression: `nvim --headless -i NONE "+luafile tests/treesitter_spec.lua" +qa` (uses the normal config; requires `:TSInstall javascript jsdoc regex`).
+- Just highlighting regression: `nvim --headless -i NONE "+luafile tests/just_highlight_spec.lua" +qa` (checks attributes on imports and subsequent recipe/comment highlighting using built-in syntax).
 - Fresh dependency installation regression: `nvim --headless -u NONE -i NONE -l tests/treesitter_bootstrap_spec.lua` (requires installed Mason/nvim-treesitter plugins, network access, and a C compiler; uses temporary Mason/parser directories).
 - If you add tests in the future, place them under a top-level `tests/` directory and document how to run them here.
 

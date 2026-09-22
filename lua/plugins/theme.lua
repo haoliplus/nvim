@@ -1,4 +1,10 @@
 local function start_treesitter(bufnr)
+  if vim.bo[bufnr].filetype == "just" then
+    -- The Just parser cannot parse attributes on imports, e.g. [unix].
+    vim.treesitter.stop(bufnr)
+    vim.bo[bufnr].syntax = "just"
+    return
+  end
   local ok, err = pcall(vim.treesitter.start, bufnr)
   if not ok and not require("treesitter_setup").pending and vim.bo[bufnr].filetype:match("^javascript") then
     vim.notify_once(
