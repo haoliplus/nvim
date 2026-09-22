@@ -7,21 +7,26 @@
 
 1. node, npm
 2. python3, python3-venv, python3-pip, black, pyright
-3. Neovim 0.12+, Git, curl, tar, a C compiler, and tree-sitter CLI 0.26.1+ (install via a package manager, not npm).
+3. Neovim 0.12+, Git, curl, tar, a C compiler, and download/extraction tools required by Mason (including gzip and unzip).
 
 ### JavaScript highlighting on a new machine
 
-The configuration automatically installs missing `javascript`, `jsdoc`, and `regex`
-Tree-sitter parsers and their highlight queries at startup. The first installation
-needs network access and the tools above; it runs in the background and enables
-highlighting in already open JS/JSX buffers when finished. Later launches reuse the
-installed parsers. Generated files live in Neovim's data directory and do not need
-to be copied with this repository.
+At startup the configuration checks whether `tree-sitter --version` works and is
+at least 0.26.1. If it is missing, broken, or too old, Mason installs
+`tree-sitter-cli` and adds its executable directory to Neovim's PATH. Once the CLI
+is ready, nvim-treesitter installs missing `javascript`, `jsdoc`, and `regex`
+parsers and queries. Installation runs asynchronously and enables highlighting in
+already open JS/JSX buffers on completion. Existing dependencies are reused.
 
-Verify `tree-sitter --version` works in the shell launching Neovim. If using mise,
-install and select a version (for example, `mise use -g tree-sitter@0.26.11`);
-having a shim on PATH alone is insufficient. Use `:checkhealth nvim-treesitter`
-for diagnostics and `:TSInstall javascript jsdoc regex` to retry a failed install.
+No mise, Cargo, or manual shell PATH setup is required for Mason's supported
+platforms. The first installation needs network access, download/extraction tools,
+and a C compiler for the parsers. Generated files live in Neovim's data directory;
+copying this repository to a new machine repeats the dependency checks.
+
+On failure, inspect `:MasonLog` (CLI) or `:messages` (parsers). To retry manually,
+run `:MasonInstall tree-sitter-cli`, wait for completion, then run
+`:TSInstall javascript jsdoc regex` and restart Neovim. For diagnostics use
+`:checkhealth mason` and `:checkhealth nvim-treesitter`.
 
 ## INSTALL
 
