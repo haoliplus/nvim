@@ -15,6 +15,10 @@ vim.g.minut_enabled = false
 vim.g.is_win = (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1)
 vim.g.is_linux = (vim.fn.has("unix") == 1 and vim.fn.has("macunix") == 0)
 vim.g.is_mac = vim.fn.has("macunix") == 1
+if vim.g.is_mac and vim.fn.isdirectory("/Library/Developer/CommandLineTools") == 1 then
+  -- Keep the compiler, linker and SDK from the same macOS toolchain.
+  vim.env.DEVELOPER_DIR = "/Library/Developer/CommandLineTools"
+end
 vim.g.logging_level = "info"
 -- views can only be fully collapsed with the global statusline
 vim.opt.laststatus = 3
