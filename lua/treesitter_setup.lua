@@ -21,36 +21,47 @@ local function check_cli(callback)
   end
 end
 
-local function install_parsers()
-  require("nvim-treesitter").install(languages):await(function(err, success)
-    vim.schedule(function()
-      M.pending = false
-      if err or success == false then
-        fail("Parser installation failed. Check :messages; retry with :TSInstall javascript jsdoc regex.")
-        return
-      end
-      -- Newly created runtime directories may not be in Neovim's lookup cache.
-      vim.o.runtimepath = vim.o.runtimepath
-      for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].filetype:match("^javascript") then
-          local ok, start_err = pcall(vim.treesitter.start, bufnr)
-          if not ok then
-            fail(tostring(start_err))
+local function install_parsers(treesitter)
+  local ok, install_err = pcall(function()
+    treesitter.install(languages):await(function(err, success)
+      vim.schedule(function()
+        M.pending = false
+        if err or success == false then
+          fail("Parser installation failed. Check :messages; retry with :TSInstall javascript jsdoc regex.")
+          return
+        end
+        -- Newly created runtime directories may not be in Neovim's lookup cache.
+        vim.o.runtimepath = vim.o.runtimepath
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].filetype:match("^javascript") then
+            local ok, start_err = pcall(vim.treesitter.start, bufnr)
+            if not ok then
+              fail(tostring(start_err))
+            end
           end
         end
-      end
+      end)
     end)
   end)
+  if not ok then
+    fail("Could not start parser installation: " .. tostring(install_err))
+  end
 end
 
 function M.setup()
   if M.pending then
     return
   end
+  local ok, treesitter = pcall(require, "nvim-treesitter")
+  if not ok or type(treesitter.install) ~= "function" then
+    fail("This configuration requires nvim-treesitter's main branch. "
+      .. "Run :Lazy update nvim-treesitter, then restart Neovim.")
+    return
+  end
   M.pending = true
   check_cli(function(available)
     if available then
-      install_parsers()
+      install_parsers(treesitter)
       return
     end
     local registry = require("mason-registry")
@@ -71,7 +82,7 @@ function M.setup()
         end
         check_cli(function(ready)
           if ready then
-            install_parsers()
+            install_parsers(treesitter)
           else
             fail("CLI is still unavailable or older than 0.26.1. Check :checkhealth mason and Neovim's PATH.")
           end
