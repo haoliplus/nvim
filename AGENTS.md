@@ -11,6 +11,7 @@
 - `just prepare_deps` and `just install` are optional setup helpers for OS-specific dependencies.
 - `nvim` launches the config locally; use it to validate changes interactively.
 - Utility scripts live in `tools/` (for example, `bash tools/upgrade_config.sh`); review a script before running.
+- 不要增加单元测试，不要tests/*
 
 ## Coding Style & Naming Conventions
 - Lua code uses 2-space indentation in this repo; follow existing module patterns (e.g., `my_utils.lua`, `custom_filetype.lua`).
