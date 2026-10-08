@@ -9,3 +9,4 @@ playground
 nvim.log
 .codex
 lazy-lock.json
+changelogs/

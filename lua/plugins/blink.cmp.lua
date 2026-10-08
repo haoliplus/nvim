@@ -59,6 +59,10 @@ return {
   ---@diagnostic disable-next-line: undefined-doc-name
   ---@type blink.cmp.Config
   opts = {
+    fuzzy = {
+      -- 下载失败时静默回退到 Lua 实现
+      implementation = "prefer_rust",
+    },
     -- 'default' for mappings similar to built-in completion
     -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
     -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
