@@ -49,7 +49,7 @@ local function install_parsers(treesitter)
 end
 
 function M.setup()
-  if M.pending then
+  if M.pending or vim.g.setup_init_running then
     return
   end
   local ok, treesitter = pcall(require, "nvim-treesitter")

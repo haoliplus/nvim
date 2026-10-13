@@ -44,6 +44,10 @@ vim.g.clipboard = {
 }
 vim.opt.rtp:prepend(vim.g.config_path)
 
+vim.api.nvim_create_user_command("SetupInit", function()
+  require("setup_init").start()
+end, { desc = "Initialize plugins, tools and Treesitter components" })
+
 require("setup")
 require("custom_filetype")
 require("local_template").setup({
@@ -59,6 +63,7 @@ if not vim.uv.fs_stat(lazypath .. "/lua/lazy/init.lua") then
 end
 
 require("lazy").setup("plugins", {
+  lockfile = vim.g.setup_init_running and vim.env.NVIM_SETUP_LOCKFILE or nil,
   git = {
     filter = false,
   },

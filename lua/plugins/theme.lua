@@ -34,7 +34,12 @@ return {
     branch = "main",
     lazy = false,
     dependencies = { "mason-org/mason.nvim" },
-    build = ":TSUpdate",
+    build = function()
+      -- SetupInit installs the CLI first, then updates parsers in its own stage.
+      if not vim.g.setup_init_running then
+        vim.cmd("TSUpdate")
+      end
+    end,
     config = function()
       require("treesitter_setup").setup()
     end,

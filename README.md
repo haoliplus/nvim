@@ -9,6 +9,32 @@
 2. python3, python3-venv, python3-pip, black, pyright
 3. Neovim 0.12+, Git, curl, tar, a C compiler, and download/extraction tools required by Mason (including gzip and unzip).
 
+### First-time initialization
+
+After placing this configuration directory, run `:SetupInit` in Neovim, or run:
+
+```sh
+bash ~/.config/nvim/tools/setup_init.sh
+```
+
+Requires Neovim 0.12+, Bash, Git, curl, tar, gzip, unzip, make, a C compiler,
+Node.js/npm, Python 3 with pip/venv/ensurepip, and Go (for gofumpt). Install these
+system dependencies first; the initializer reports missing prerequisites.
+
+The command restores plugins using `lazy-lock.json`, installs missing Mason tools
+and Tree-sitter CLI, installs common language parsers with their queries, updates
+parser revisions to match nvim-treesitter, and validates queries in a new process.
+The repository lockfile is preserved. The parser list and tool list are in
+`lua/setup_init.lua`; these steps only run when explicitly requested.
+
+Repeated runs reuse installed tools and matching parsers, and repair incomplete
+parser/query installations. Concurrent runs are rejected using
+`stdpath('data')/setup-init.lock`. Failures return a nonzero exit code and can be
+retried after resolving the reported error. If the process was forcibly killed,
+check the PID in `setup-init.lock/pid` before manually removing the stale lock.
+The lock coordinates SetupInit runs; avoid running other plugin/package updates
+at the same time. Restart Neovim after completion to unload old plugin/parser code.
+
 ### JavaScript highlighting on a new machine
 
 At startup the configuration checks whether `tree-sitter --version` works and is
