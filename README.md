@@ -3,6 +3,16 @@
 ## FONT
 1. nvim-config/resources/JetBrainsMonoNLRegularNerdFontComplete.ttf
 
+### Opening directories
+
+`nvim .` opens Neo-tree on the left and an empty editing buffer on the right.
+Opening a file from the tree automatically removes hidden, unmodified, empty
+unnamed buffers from the buffer list. Buffers with content, unsaved changes, or
+visible windows are preserved. Before opening any files, `:q` from either the
+tree or the empty editing window exits both together. This applies only when
+there are no other listed buffers, modified buffers, or tab pages.
+See [diagnosis and validation](docs/neo_tree_empty_buffer.md).
+
 ### REQUIRE
 
 1. node, npm
