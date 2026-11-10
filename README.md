@@ -3,6 +3,39 @@
 ## FONT
 1. nvim-config/resources/JetBrainsMonoNLRegularNerdFontComplete.ttf
 
+### Local environment variables
+
+Copy the tracked example to `env.local.lua` next to `init.vim` (run from this
+configuration directory), then edit the defaults after `or` as needed:
+
+```sh
+cp -i env.local.example.lua env.local.lua
+```
+
+For example:
+
+```lua
+vim.env.NICKNAME = vim.env.NICKNAME or "your-name"
+vim.env.HTTP_PROXY = vim.env.HTTP_PROXY or "http://127.0.0.1:7890"
+vim.env.HTTPS_PROXY = vim.env.HTTPS_PROXY or "http://127.0.0.1:7890"
+```
+
+This optional file is ignored by Git and loaded before `lua/init.lua` and plugin
+initialization. A missing file is silently skipped; errors in an existing file
+are reported normally. Changes affect Neovim and subsequently started child
+processes, without changing the parent terminal environment. Restart Neovim after
+editing the file. Use Lua assignments, not shell `export` or dotenv syntax.
+Existing nonempty environment values take precedence. `nil`
+means no local default; replace it with a string in your private file when needed.
+The current Neovim reads empty environment values as `nil` through `vim.env`, so
+empty values also use the local default.
+The example lists variables referenced by the current configuration, including
+legacy plugins and the disabled startup dashboard. It distinguishes repository
+conventions (including custom plugin inputs), native Neovim variables, plugin
+contracts, and shared system/tool variables, with the reader identified for each.
+Real credentials belong only in the private file or the inherited environment.
+See [implementation and validation](docs/local_environment.md).
+
 ### Opening directories
 
 `nvim .` opens Neo-tree on the left and an empty editing buffer on the right.
