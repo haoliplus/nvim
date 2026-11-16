@@ -2,6 +2,7 @@ plugin
 .luarc.json
 .DS_Store
 env.sh
+/env.local.lua
 lua/custom_command.lua
 cd-project.nvim.json
 .claude

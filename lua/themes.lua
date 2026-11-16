@@ -7,8 +7,7 @@ vim.opt.cursorline = true
 vim.opt.colorcolumn = { 80, 120 }
 
 vim.opt.background = "dark"
--- vim.fn.setenv("NVIM_TUI_ENABLE_TRUE_COLOR", 1)
-vim.env.NVIM_TUI_ENABLE_TRUE_COLOR = 1
+vim.env.NVIM_TUI_ENABLE_TRUE_COLOR = vim.env.NVIM_TUI_ENABLE_TRUE_COLOR or "1"
 
 -- Change comment in C++ to ///
 -- vim.cmd([[autocmd FileType cpp setlocal commentstring=///\ %s]])

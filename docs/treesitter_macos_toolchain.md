@@ -29,3 +29,6 @@
 ```vim
 :TSInstall javascript jsdoc regex
 ```
+
+2026-11-10 更新：`DEVELOPER_DIR` 现在优先保留继承环境或 `env.local.lua`
+提供的非空值；仅未设置时使用上述 Command Line Tools 默认路径。
