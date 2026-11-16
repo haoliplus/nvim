@@ -35,6 +35,11 @@ check the PID in `setup-init.lock/pid` before manually removing the stale lock.
 The lock coordinates SetupInit runs; avoid running other plugin/package updates
 at the same time. Restart Neovim after completion to unload old plugin/parser code.
 
+### TypeScript language server startup failure
+
+See [TypeScript language server troubleshooting](docs/typescript_language_server.md)
+if Neovim cannot spawn `typescript-language-server --stdio`.
+
 ### JavaScript highlighting on a new machine
 
 At startup the configuration checks whether `tree-sitter --version` works and is
